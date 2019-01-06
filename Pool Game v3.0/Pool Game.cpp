@@ -475,7 +475,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
 	glutInit(&argc, ((char **)argv));
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE| GLUT_RGBA);
-	glutInitWindowPosition(0,0);
+	glutInitWindowPosition(200,200);
 	glutInitWindowSize(1000,700);
 	//glutFullScreen();
 	glutCreateWindow("MSc Assignment : Golf Game");

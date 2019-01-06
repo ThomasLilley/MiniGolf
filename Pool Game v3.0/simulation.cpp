@@ -223,6 +223,22 @@ bool ball::HasHitBall(const ball &b) const
 
 bool ball::HasHitHole()
 {
+	double holex[4] = { 1.5, 4.5, 9.5, 14.5 };
+	double holez[4] = { -2.5, -4.5, -2.5, -2.5 };
+
+	double startposx[4] = { 0.5, 4.5, 6.5, 11.5 };
+	double startposz[4] = { -1.5, -1.5, -2.5, -3.5 };
+
+	for (int i = 0; i < NUM_HOLES; i++) {
+		if (position(0) > holex[i] - 0.1 &&position(0) < holex[i] + 0.1) {
+			if (position(1) > holez[i] - 0.1 &&position(1) < holez[i] + 0.1) {
+				std::cout << "Has Hit Hole !" << std::endl;
+				position(0) = startposx[i];
+				position(1) = startposz[i];
+				velocity(0) = velocity(1) = 0;
+			}
+		}	
+	}
 	return false;
 }
 
@@ -417,11 +433,13 @@ void table::Update(int ms)
 		for(int j=0;j<NUM_CUSHIONS;j++)
 		{
 			balls[i].DoPlaneCollision(cushions[j]);
+			balls[i].HasHitHole();
 		}
 
 		for(int j=(i+1);j<NUM_BALLS;j++) 
 		{
 			balls[i].DoBallCollision(balls[j]);
+			
 		}
 	}
 	
@@ -438,6 +456,7 @@ void table::Update(int ms)
 
 bool table::AnyBallsMoving(void) const
 {
+	std::cout << "any balls moving?" << std::endl;
 	//return true if any ball has a non-zero velocity
 	for (int i = 0; i < NUM_BALLS; i++)
 	{
@@ -445,4 +464,8 @@ bool table::AnyBallsMoving(void) const
 		if (balls[i].velocity(1) != 0.0) return true;
 	}
 	return false;
+}
+
+void table::playerScore(void) {
+
 }

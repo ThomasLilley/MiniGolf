@@ -17,6 +17,7 @@
 #define NUM_CUSHIONS	(44) 		
 #define MAX_PARTICLES	(200)
 #define NUM_HOLES		(4)
+#define NUM_PLAYERS		(2)
 /*-----------------------------------------------------------
   plane normals
   -----------------------------------------------------------*/
@@ -27,6 +28,13 @@ extern vec2	gPlaneNormal_Right;
 extern vec2	gPlaneNormal_Bottom;
 */
 
+class player {
+public:
+	vec2 position;
+	int strokes = 0;
+	int currenthole = 0;
+	int currentPlayer = 0;
+};
 
 /*-----------------------------------------------------------
   cushion class
@@ -130,6 +138,9 @@ public:
 	void SetupBall(void);
 	void Update(int ms);
 	bool AnyBallsMoving(void) const;
+
+	void playerScore(void);
+
 
 	
 

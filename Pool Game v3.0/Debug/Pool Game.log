@@ -1,2 +1,6 @@
-﻿  simulation.cpp
+﻿  stdafx.cpp
+  simulation.cpp
+  Pool Game.cpp
+  Generating Code...
+Pool Game.obj : warning LNK4075: ignoring '/EDITANDCONTINUE' due to '/SAFESEH' specification
   Pool Game.vcxproj -> C:\Users\Thoma\Desktop\MiniGolf\Pool Game v3.0\Debug\Pool Game.exe
