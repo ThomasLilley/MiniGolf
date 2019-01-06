@@ -7,6 +7,7 @@
 #include<math.h>
 #include"simulation.h"
 
+
 //cue variables
 float gCueAngle = 0.0;
 float gCuePower = 0.25;
@@ -134,7 +135,7 @@ void RenderScene(void) {
 	gluLookAt(gCamPos(0),gCamPos(1),gCamPos(2),gCamLookAt(0),gCamLookAt(1),gCamLookAt(2),0.0f,1.0f,0.0f);
 
 	//draw the ball
-	glColor3f(1.0,1.0,1.0);
+	glColor3f(0.0,0.5,1.0);
 	for(int i=0;i<NUM_BALLS;i++)
 	{
 		glPushMatrix();
@@ -147,7 +148,17 @@ void RenderScene(void) {
 		glPopMatrix();
 		glColor3f(0.0,0.0,1.0);
 	}
-	glColor3f(1.0,1.0,1.0);
+
+	//draw the holes
+	glColor3f(1.0, 1.0, 1.0);
+	for (int i = 0; i < NUM_HOLES; i++)
+	{
+		glPushMatrix();
+		glTranslatef(gTable.holes[i].position(0), (BALL_RADIUS / 2.0), gTable.holes[i].position(1));
+		glutSolidSphere(gTable.balls[0].radius, 48, 48);
+		glPopMatrix();
+	}
+	glColor3f(0.0, 1.0, 0.0);
 
 	//draw the table
 	for(int i=0;i<NUM_CUSHIONS;i++)

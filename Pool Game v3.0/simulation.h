@@ -16,6 +16,7 @@
 #define NUM_BALLS		(1)		
 #define NUM_CUSHIONS	(44) 		
 #define MAX_PARTICLES	(200)
+#define NUM_HOLES		(4)
 /*-----------------------------------------------------------
   plane normals
   -----------------------------------------------------------*/
@@ -67,6 +68,7 @@ public:
 	
 	bool HasHitPlane(const cushion &c) const;
 	bool HasHitBall(const ball &b) const;
+	bool HasHitHole();
 
 	void HitPlane(const cushion &c);
 	void HitBall(ball &b);
@@ -106,6 +108,12 @@ public:
 	void update(int ms);
 };
 
+class hole
+{
+public:
+	vec2 position;
+
+};
 
 /*-----------------------------------------------------------
   table class
@@ -113,6 +121,7 @@ public:
 class table
 {
 public:
+	hole holes[4];
 	ball balls[NUM_BALLS];
 	cushion cushions[NUM_CUSHIONS];
 	particleSet parts;
@@ -122,7 +131,13 @@ public:
 	void Update(int ms);
 	bool AnyBallsMoving(void) const;
 
-	float hole1[48]
+	
+
+private:
+
+	
+
+	float course1[48]
 	{ 
 		0, -1, 1, -1,
 		1, -1, 1, -2,
@@ -138,7 +153,7 @@ public:
 		0, -2, 0, -1
 	};
 
-	float hole2[40]
+	float course2[40]
 	{ 
 		4, -1, 5, -1,
 		5, -1, 5, -3,
@@ -152,7 +167,7 @@ public:
 		4, -2, 4, -1
 	};
 
-	float hole3[48]
+	float course3[48]
 	{ 
 		6, -2, 7, -2,
 		7, -2, 7, -1,
@@ -169,7 +184,7 @@ public:
 		9, -2, 8, -2
 	};
 
-	float hole4[40]
+	float course4[40]
 	{
 		11, -2, 12, -2,
 		12, -2, 12, -1,
@@ -187,4 +202,3 @@ public:
   global table
   -----------------------------------------------------------*/
 extern table gTable;
-

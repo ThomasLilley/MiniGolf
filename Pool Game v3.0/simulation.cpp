@@ -123,16 +123,85 @@ void ball::Update(int ms)
 	if(velocity.Magnitude()<SMALL_VELOCITY) velocity = 0.0;
 }
 
+
 bool ball::HasHitPlane(const cushion &c) const
 {
 	//if moving away from plane, cannot hit
-	if(velocity.Dot(c.normal) >= 0.0) return false;
-	
+	if (velocity.Dot(c.normal) >= 0.0) {
+		return false;
+	}
 	//if in front of plane, then have not hit
 	vec2 relPos = position - c.vertices[0];
-	double sep = relPos.Dot(c.normal);
-	if(sep > radius) return false;
-	return true;
+	
+	bool collisionDetected = false;
+	double cPos = 0;
+	double collisionPos = 0;
+	// determines whether the plane is horizontal or vertical
+	if (c.vertices[0](0) == c.vertices[1](0) && c.vertices[0](1) != c.vertices[1](1)) {
+		// if the course wall is on the vertical plane then detect collisions	
+		cPos = 0;
+		cPos = c.centre(0);
+		collisionPos = (position(0) - cPos);
+		if (collisionPos < 0) {
+			collisionPos *= -1;
+		}
+		//creates a buffer so that the ball does not pass the wall before colliding
+		if (collisionPos < 0.05) {
+
+			// if the 	
+			if (c.vertices[0](1) - c.vertices[1](1) < 0) {
+				if (position(1) > c.vertices[0](1) && position(1) < c.vertices[1](1)) {
+					collisionDetected = true;
+				}
+			}
+			else if (c.vertices[0](1) - c.vertices[1](1) > 0) {
+				if (position(1) < c.vertices[0](1) && position(1) > c.vertices[1](1)) { 				
+					collisionDetected = true;;
+				}
+			}
+		}
+		else {
+			return false;
+		}
+	}
+	else if (c.vertices[0](1) == c.vertices[1](1) && c.vertices[0](0) != c.vertices[1](0)) {
+		// if the course wall is on the horizontal plane then detect collisons
+		cPos = 0;
+		cPos = c.centre(1);
+
+		collisionPos = (position(1) - cPos);
+		if (collisionPos < 0) {
+			collisionPos *= -1;
+		}
+
+		
+		//creates a buffer so that the ball does not pass the wall before colliding
+		if (collisionPos < 0.05) {
+			if (c.vertices[0](0) - c.vertices[1](0) < 0) {
+				if (position(0) > c.vertices[0](0) && position(0) < c.vertices[1](0)) 
+				{  	
+					collisionDetected = true;;
+				}
+			}
+			else if (c.vertices[0](0) - c.vertices[1](0) > 0) {
+				if (position(0) < c.vertices[0](0) && position(0) > c.vertices[1](0)) 
+				{ 
+					collisionDetected = true;;
+				}
+			}
+		}
+		else {
+			return false;
+		}
+	}
+
+	if (collisionDetected == true) {
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
 
 bool ball::HasHitBall(const ball &b) const
@@ -150,6 +219,11 @@ bool ball::HasHitBall(const ball &b) const
 	//if distnce is more than sum of radii, have not hit
 	if(dist > (radius+b.radius)) return false;
 	return true;
+}
+
+bool ball::HasHitHole()
+{
+	return false;
 }
 
 void ball::HitPlane(const cushion &c)
@@ -273,30 +347,30 @@ void table::SetupCushions(void)
 	gTable.balls[0].position(1) = -1.5;
 	for (int i = 0; i < 12; i++)//hole 1
 	{
-		cushions[i].vertices[0](0) = hole1[cushion_cnt++] ;
-		cushions[i].vertices[0](1) = hole1[cushion_cnt++] ; 
-		cushions[i].vertices[1](0) = hole1[cushion_cnt++] ; 
-		cushions[i].vertices[1](1) = hole1[cushion_cnt++] ; 
+		cushions[i].vertices[0](0) = course1[cushion_cnt++] ;
+		cushions[i].vertices[0](1) = course1[cushion_cnt++] ; 
+		cushions[i].vertices[1](0) = course1[cushion_cnt++] ; 
+		cushions[i].vertices[1](1) = course1[cushion_cnt++] ; 
 
 	}
 
 	cushion_cnt = 0;
 	for (int i = 12; i < 22; i++)//hole 2
 	{
-		cushions[i].vertices[0](0) = hole2[cushion_cnt++] ;
-		cushions[i].vertices[0](1) = hole2[cushion_cnt++] ;
-		cushions[i].vertices[1](0) = hole2[cushion_cnt++] ;
-		cushions[i].vertices[1](1) = hole2[cushion_cnt++] ;
+		cushions[i].vertices[0](0) = course2[cushion_cnt++] ;
+		cushions[i].vertices[0](1) = course2[cushion_cnt++] ;
+		cushions[i].vertices[1](0) = course2[cushion_cnt++] ;
+		cushions[i].vertices[1](1) = course2[cushion_cnt++] ;
 
 	}
 
 	cushion_cnt = 0;
 	for (int i = 22; i < 34; i++)//hole 3
 	{
-		cushions[i].vertices[0](0) = hole3[cushion_cnt++] ;
-		cushions[i].vertices[0](1) = hole3[cushion_cnt++] ;
-		cushions[i].vertices[1](0) = hole3[cushion_cnt++] ;
-		cushions[i].vertices[1](1) = hole3[cushion_cnt++] ;
+		cushions[i].vertices[0](0) = course3[cushion_cnt++] ;
+		cushions[i].vertices[0](1) = course3[cushion_cnt++] ;
+		cushions[i].vertices[1](0) = course3[cushion_cnt++] ;
+		cushions[i].vertices[1](1) = course3[cushion_cnt++] ;
 
 	}
 
@@ -304,10 +378,10 @@ void table::SetupCushions(void)
 	for (int i = 34; i < 44; i++)//hole 4
 	{
 		
-		cushions[i].vertices[0](0) = hole4[cushion_cnt++] ;
-		cushions[i].vertices[0](1) = hole4[cushion_cnt++] ;
-		cushions[i].vertices[1](0) = hole4[cushion_cnt++] ;
-		cushions[i].vertices[1](1) = hole4[cushion_cnt++] ;
+		cushions[i].vertices[0](0) = course4[cushion_cnt++] ;
+		cushions[i].vertices[0](1) = course4[cushion_cnt++] ;
+		cushions[i].vertices[1](0) = course4[cushion_cnt++] ;
+		cushions[i].vertices[1](1) = course4[cushion_cnt++] ;
 
 	}
 
@@ -316,6 +390,17 @@ void table::SetupCushions(void)
 		cushions[i].MakeCentre();
 		cushions[i].MakeNormal();
 	}
+
+	float holex[4] = { 1.5, 4.5, 9.5, 14.5 };
+	float holez[4] = { -2.5, -4.5, -2.5, -2.5 };
+
+	for (int i = 0; i < NUM_HOLES; i++) {
+		gTable.holes[i].position(0) = holex[i];
+		gTable.holes[i].position(1) = holez[i];
+		std::cout << gTable.holes[i].position(0) << " "<< gTable.holes[i].position(1) << " " << i << std::endl;
+	}
+	
+
 }
  
 
@@ -354,10 +439,10 @@ void table::Update(int ms)
 bool table::AnyBallsMoving(void) const
 {
 	//return true if any ball has a non-zero velocity
-	for(int i=0;i<NUM_BALLS;i++) 
+	for (int i = 0; i < NUM_BALLS; i++)
 	{
-		if(balls[i].velocity(0)!=0.0) return true;
-		if(balls[i].velocity(1)!=0.0) return true;
+		if (balls[i].velocity(0) != 0.0) return true;
+		if (balls[i].velocity(1) != 0.0) return true;
 	}
 	return false;
 }
