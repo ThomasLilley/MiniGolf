@@ -122,6 +122,7 @@ void ball::Update(int ms)
 	position += ((velocity * ms)/1000.0f);
 	//set small velocities to zero
 	if(velocity.Magnitude()<SMALL_VELOCITY) velocity = 0.0;
+
 }
 
 
@@ -221,7 +222,6 @@ bool ball::HasHitBall(const ball &b) const
 	if(dist > (radius+b.radius)) return false;
 	return true;
 }
-int courseno = 0;
 
 bool ball::HasHitHole(const ball & b)
 {
@@ -231,35 +231,40 @@ bool ball::HasHitHole(const ball & b)
 	double startposx[4] = { 0.5, 4.5, 6.5, 11.5 };
 	double startposz[4] = { -1.5, -1.5, -2.5, -3.5 };
 
+
+
 	for (int i = 0; i < NUM_HOLES; i++) {
-		if (position(0) > holex[courseno] - 0.1 &&position(0) < holex[courseno] + 0.1) {
-			if (position(1) > holez[courseno] - 0.1 &&position(1) < holez[courseno] + 0.1) {
-				std::cout << "Current Player:" << gTable.currentPlayer << std::endl;
-				std::cout << "Has Hit Hole !" << std::endl;
-				position(0) = startposx[courseno];
-				position(1) = startposz[courseno];
+		if (position(0) > holex[gTable.currentHole] - 0.1 &&position(0) < holex[gTable.currentHole] + 0.1) {
+			if (position(1) > holez[gTable.currentHole] - 0.1 &&position(1) < holez[gTable.currentHole] + 0.1) {
+				//std::cout << "Current Player:" << gTable.currentPlayer << std::endl;
+				//std::cout << "Has Hit Hole !" << std::endl;
+				position(0) = startposx[gTable.currentHole];
+				position(1) = startposz[gTable.currentHole];
 				velocity(0) = velocity(1) = 0;
-				gTable.players[gTable.currentPlayer].holeCompleted = true;
-				std::cout << gTable.players[gTable.currentPlayer].holeCompleted << std::endl;
+				//std::cout << gTable.players[gTable.currentPlayer].holeCompleted << std::endl;
 				if (gTable.currentPlayer < NUM_PLAYERS-1) {
 					gTable.currentPlayer++;
 				}
 				else
 				{
 					gTable.currentPlayer = 0;
-					if (courseno < NUM_HOLES-1) {
+					if (gTable.currentHole < NUM_HOLES-1) {
 
-						courseno++;
-						position(0) = startposx[courseno];
-						position(1) = startposz[courseno];
+
+						gTable.currentHole++;
+						position(0) = startposx[gTable.currentHole];
+						position(1) = startposz[gTable.currentHole];
 						velocity(0) = velocity(1) = 0;
 					}
 					else
 					{
 						std::cout << "END OF GAME" << std::endl;
+						gTable.balls[0].position(0) = 0.5;
+						gTable.balls[0].position(1) = -1.5;
+						gTable.gameOver = true;
 					}
 				}
-				std::cout << "Current Player:" << gTable.currentPlayer << std::endl;
+				//std::cout << "Current Player:" << gTable.currentPlayer << std::endl;
 			}
 		}	
 	}
@@ -269,7 +274,7 @@ bool ball::HasHitHole(const ball & b)
 void ball::HitPlane(const cushion &c)
 {
 	//reverse velocity component perpendicular to plane  
-	std::cout << c.vertices[0](0) << c.vertices[0](1) << std::endl;
+	//std::cout << c.vertices[0](0) << c.vertices[0](1) << std::endl;
 	double comp = velocity.Dot(c.normal) * (1.0+gCoeffRestitution);
 	vec2 delta = -(c.normal * comp);
 	velocity += delta; 
@@ -492,7 +497,6 @@ bool table::AnyBallsMoving(void) const
 	for (int i = 0; i < NUM_BALLS; i++)
 	{
 		if (balls[i].velocity(0) != 0.0 && balls[i].velocity(1) != 0.0) {
-			
 			
 			return true;
 		}

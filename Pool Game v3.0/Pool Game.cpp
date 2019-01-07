@@ -23,8 +23,8 @@ float gCueBallFactor = 8.0;
 bool gDoCue = true;
 
 //camera variables
-vec3 gCamPos(0.0,3.0,2.0);
-vec3 gCamLookAt(0.0,0.5,-2);
+vec3 gCamPos(0.3,1.9,0.6);
+vec3 gCamLookAt(0.3,1.4,-0.27);
 bool gCamRotate = true;
 float gCamRotSpeed = 0.2;
 float gCamMoveSpeed = 0.5;
@@ -37,6 +37,226 @@ bool gCamZout = false;
 
 //rendering options
 #define DRAW_SOLID	(0)
+
+void camPositioning() {
+
+	if (gTable.currentHole == 1) {
+		gCamPos = { 4.0, 2.0, 0.5 };
+		gCamLookAt = { 4.0, 1.5, -0.35 };
+	}
+	if (gTable.currentHole == 2) {
+		gCamPos = { 8.2, 2.3, 1.3 };
+		gCamLookAt = { 8.2, 1.8, 0.52 };
+	}
+	if (gTable.currentHole == 3) {
+		gCamPos = { 13.0, 2.3, 1.3 };
+		gCamLookAt = { 13.0, 1.8, 0.5 };
+	}
+
+	//float courseCP[9]
+	//{
+	//	4.0,2.0,0.5,
+	//	8.0,2.0, 1.2,
+	//	13.0,2.0,1.3
+	//};
+	//float courseLA[9]
+	//{
+	//	4.0,1.5,-0.35,
+	//	8.0,2.0,0.45 ,
+	//	12.0,2.0,0.5
+	//};
+
+
+}
+
+
+void text()
+{
+	std::string text = "Player 1 Strokes: " + std::to_string(gTable.players[0].strokes);
+	char menu[80];
+	strcpy(menu, text.c_str());
+	int len;
+	len = strlen(menu);
+
+	glColor3f(1, 1, 1);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+
+	gluOrtho2D(0, 600, 0, 600);
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+
+	glLoadIdentity();
+
+	glRasterPos2i(5, 580);
+
+
+	for (int i = 0; i < len; ++i)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, menu[i]);
+	}
+
+	glPopMatrix();
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+
+	std::string text1 = "Player 2 Strokes: " + std::to_string(gTable.players[1].strokes);
+	char menu1[80];
+	strcpy(menu1, text1.c_str());
+	int len1;
+	len1 = strlen(menu1);
+
+	glColor3f(1, 1, 1);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+
+	gluOrtho2D(0, 600, 0, 600);
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+
+	glLoadIdentity();
+
+	glRasterPos2i(5, 560);
+
+
+	for (int i = 0; i < len1; ++i)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, menu1[i]);
+	}
+
+	glPopMatrix();
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+
+
+	if (gTable.gameOver == true) {
+		std::string text2 = "";
+		if (gTable.players[0].strokes == gTable.players[1].strokes)
+		{
+			text2 = "GAME OVER !!     IT'S A DRAW!";
+		}
+		else if (gTable.players[0].strokes > gTable.players[1].strokes)
+		{
+			text2 = "GAME OVER !!     PLAYER 2 WINS";
+		}
+		else if (gTable.players[0].strokes < gTable.players[1].strokes)
+		{
+			text2 = "GAME OVER !!     PLAYER 1 WINS";
+		}
+		char menu2[80];
+		strcpy(menu2, text2.c_str());
+		int len2;
+		len2 = strlen(menu2);
+
+		glColor3f(1, 1, 1);
+
+		glMatrixMode(GL_PROJECTION);
+		glPushMatrix();
+		glLoadIdentity();
+
+		gluOrtho2D(0, 600, 0, 600);
+
+		glMatrixMode(GL_MODELVIEW);
+		glPushMatrix();
+
+		glLoadIdentity();
+
+		glRasterPos2i(190, 480);
+
+
+		for (int i = 0; i < len2; ++i)
+		{
+			glutBitmapCharacter(GLUT_BITMAP_TIMES_ROMAN_24, menu2[i]);
+		}
+
+		glPopMatrix();
+
+		glMatrixMode(GL_PROJECTION);
+		glPopMatrix();
+		glMatrixMode(GL_MODELVIEW);
+	}
+}
+
+void holeText() {
+	std::string text1 = "Hole : " + std::to_string(gTable.currentHole+1);
+	char menu1[80];
+	strcpy(menu1, text1.c_str());
+	int len1;
+	len1 = strlen(menu1);
+
+	glColor3f(1, 1, 1);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+
+	gluOrtho2D(0, 600, 0, 600);
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+
+	glLoadIdentity();
+
+	glRasterPos2i(540, 580);
+
+
+	for (int i = 0; i < len1; ++i)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, menu1[i]);
+	}
+
+	glPopMatrix();
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+}
+
+void playerText() {
+	std::string text1 = "Player " + std::to_string(gTable.currentPlayer + 1) + "'s Turn ";
+	char menu1[80];
+	strcpy(menu1, text1.c_str());
+	int len1;
+	len1 = strlen(menu1);
+
+	glColor3f(1, 1, 1);
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+
+	gluOrtho2D(0, 600, 0, 600);
+
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+
+	glLoadIdentity();
+
+	glRasterPos2i(270, 580);
+
+
+	for (int i = 0; i < len1; ++i)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, menu1[i]);
+	}
+
+	glPopMatrix();
+
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+}
+
 
 void DoCamera(int ms)
 {
@@ -132,6 +352,11 @@ void DoCamera(int ms)
 
 void RenderScene(void) {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	text();
+	holeText();
+	camPositioning();
+	playerText();
 
 	//set camera
 	glLoadIdentity();
@@ -312,7 +537,13 @@ void KeyboardFunc(unsigned char key, int x, int y)
 			{
 				vec2 imp(	(-sin(gCueAngle) * gCuePower * gCueBallFactor),
 							(-cos(gCueAngle) * gCuePower * gCueBallFactor));
-				gTable.balls[0].ApplyImpulse(imp);				
+				gTable.balls[0].ApplyImpulse(imp);	
+
+				gTable.players[gTable.currentPlayer].strokes++;
+				std::cout << "Player " << gTable.currentPlayer << " - " << gTable.players[gTable.currentPlayer].strokes << " strokes" << std::endl;
+				
+				std::cout << "Cam pos: " << gCamPos(0) <<" " << gCamPos(1) <<" " << gCamPos(2) << std::endl;
+				std::cout << "Cam look at: " << gCamLookAt(0) << " "<< gCamLookAt(1) << " " << gCamLookAt(2) << std::endl;
 			}
 			break;
 		}

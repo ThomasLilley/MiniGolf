@@ -142,7 +142,8 @@ public:
 	std::vector<player> players;
 	int currentPlayer = 0;
 	int currentHole = 0;
-	
+	const std::string gameState = "Test" ; // controls game outcome
+	bool gameOver = false;
 
 	void SetupCushions(void);
 	void SetupBall(void);
@@ -172,6 +173,8 @@ private:
 		0, -2, 0, -1
 	};
 
+	
+
 	float course2[40]
 	{ 
 		4, -1, 5, -1,
@@ -186,6 +189,8 @@ private:
 		4, -2, 4, -1
 	};
 
+
+	
 	float course3[48]
 	{ 
 		6, -2, 7, -2,
@@ -202,6 +207,8 @@ private:
 		9, -3, 9, -2,
 		9, -2, 8, -2
 	};
+
+	
 
 	float course4[40]
 	{
