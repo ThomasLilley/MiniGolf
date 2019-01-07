@@ -58,6 +58,7 @@ int ball::ballIndexCnt = 0;
 
 void ball::Reset(void)
 {
+
 	//set velocity to zero
 	velocity = 0.0;
 
@@ -220,8 +221,9 @@ bool ball::HasHitBall(const ball &b) const
 	if(dist > (radius+b.radius)) return false;
 	return true;
 }
+int courseno = 0;
 
-bool ball::HasHitHole()
+bool ball::HasHitHole(const ball & b)
 {
 	double holex[4] = { 1.5, 4.5, 9.5, 14.5 };
 	double holez[4] = { -2.5, -4.5, -2.5, -2.5 };
@@ -230,12 +232,34 @@ bool ball::HasHitHole()
 	double startposz[4] = { -1.5, -1.5, -2.5, -3.5 };
 
 	for (int i = 0; i < NUM_HOLES; i++) {
-		if (position(0) > holex[i] - 0.1 &&position(0) < holex[i] + 0.1) {
-			if (position(1) > holez[i] - 0.1 &&position(1) < holez[i] + 0.1) {
+		if (position(0) > holex[courseno] - 0.1 &&position(0) < holex[courseno] + 0.1) {
+			if (position(1) > holez[courseno] - 0.1 &&position(1) < holez[courseno] + 0.1) {
+				std::cout << "Current Player:" << gTable.currentPlayer << std::endl;
 				std::cout << "Has Hit Hole !" << std::endl;
-				position(0) = startposx[i];
-				position(1) = startposz[i];
+				position(0) = startposx[courseno];
+				position(1) = startposz[courseno];
 				velocity(0) = velocity(1) = 0;
+				gTable.players[gTable.currentPlayer].holeCompleted = true;
+				std::cout << gTable.players[gTable.currentPlayer].holeCompleted << std::endl;
+				if (gTable.currentPlayer < NUM_PLAYERS-1) {
+					gTable.currentPlayer++;
+				}
+				else
+				{
+					gTable.currentPlayer = 0;
+					if (courseno < NUM_HOLES-1) {
+
+						courseno++;
+						position(0) = startposx[courseno];
+						position(1) = startposz[courseno];
+						velocity(0) = velocity(1) = 0;
+					}
+					else
+					{
+						std::cout << "END OF GAME" << std::endl;
+					}
+				}
+				std::cout << "Current Player:" << gTable.currentPlayer << std::endl;
 			}
 		}	
 	}
@@ -352,11 +376,13 @@ void particleSet::update(int ms)
 	}
 }
 
+
 /*-----------------------------------------------------------
   table class members
   -----------------------------------------------------------*/
 void table::SetupCushions(void)
 {
+
 
 	int cushion_cnt = 0;
 	gTable.balls[0].position(0) = 0.5;
@@ -416,6 +442,11 @@ void table::SetupCushions(void)
 		std::cout << gTable.holes[i].position(0) << " "<< gTable.holes[i].position(1) << " " << i << std::endl;
 	}
 	
+	for (int i = 0; i < NUM_PLAYERS; i++) {
+		player newPlayer;
+		newPlayer.playerNo = i;
+		gTable.players.push_back(newPlayer);
+	}
 
 }
  
@@ -433,7 +464,7 @@ void table::Update(int ms)
 		for(int j=0;j<NUM_CUSHIONS;j++)
 		{
 			balls[i].DoPlaneCollision(cushions[j]);
-			balls[i].HasHitHole();
+			balls[i].HasHitHole(balls[i]);
 		}
 
 		for(int j=(i+1);j<NUM_BALLS;j++) 
@@ -456,16 +487,18 @@ void table::Update(int ms)
 
 bool table::AnyBallsMoving(void) const
 {
-	std::cout << "any balls moving?" << std::endl;
+	//std::cout << "any balls moving?" << std::endl;
 	//return true if any ball has a non-zero velocity
 	for (int i = 0; i < NUM_BALLS; i++)
 	{
-		if (balls[i].velocity(0) != 0.0) return true;
-		if (balls[i].velocity(1) != 0.0) return true;
+		if (balls[i].velocity(0) != 0.0 && balls[i].velocity(1) != 0.0) {
+			
+			
+			return true;
+		}
+
 	}
+
 	return false;
-}
-
-void table::playerScore(void) {
-
+	
 }

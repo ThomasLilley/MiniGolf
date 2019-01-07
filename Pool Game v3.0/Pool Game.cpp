@@ -1,11 +1,14 @@
 // Pool Game.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
+#include<stdio.h>
+#include<stdlib.h>
 #include "stdafx.h"
 #include<glut.h>
 #include<math.h>
 #include"simulation.h"
+#include <string>
+#include <iostream>
 
 
 //cue variables

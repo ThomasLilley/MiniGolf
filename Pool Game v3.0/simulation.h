@@ -1,7 +1,10 @@
 /*-----------------------------------------------------------
   Simulation Header File
   -----------------------------------------------------------*/
+
 #include"vecmath.h"
+#include <vector>
+#include <iterator>
 
 /*-----------------------------------------------------------
   Macros
@@ -32,8 +35,9 @@ class player {
 public:
 	vec2 position;
 	int strokes = 0;
-	int currenthole = 0;
-	int currentPlayer = 0;
+	int playerNo = 0;
+	bool holeCompleted = false;
+	
 };
 
 /*-----------------------------------------------------------
@@ -76,7 +80,7 @@ public:
 	
 	bool HasHitPlane(const cushion &c) const;
 	bool HasHitBall(const ball &b) const;
-	bool HasHitHole();
+	bool HasHitHole(const ball &b);
 
 	void HitPlane(const cushion &c);
 	void HitBall(ball &b);
@@ -134,12 +138,16 @@ public:
 	cushion cushions[NUM_CUSHIONS];
 	particleSet parts;
 
+	//game control
+	std::vector<player> players;
+	int currentPlayer = 0;
+	int currentHole = 0;
+	
+
 	void SetupCushions(void);
 	void SetupBall(void);
 	void Update(int ms);
 	bool AnyBallsMoving(void) const;
-
-	void playerScore(void);
 
 
 	
