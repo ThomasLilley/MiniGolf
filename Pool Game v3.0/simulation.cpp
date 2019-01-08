@@ -233,40 +233,39 @@ bool ball::HasHitHole(const ball & b)
 
 
 
-	for (int i = 0; i < NUM_HOLES; i++) {
-		if (position(0) > holex[gTable.currentHole] - 0.1 &&position(0) < holex[gTable.currentHole] + 0.1) {
-			if (position(1) > holez[gTable.currentHole] - 0.1 &&position(1) < holez[gTable.currentHole] + 0.1) {
-				//std::cout << "Current Player:" << gTable.currentPlayer << std::endl;
-				//std::cout << "Has Hit Hole !" << std::endl;
-				position(0) = startposx[gTable.currentHole];
-				position(1) = startposz[gTable.currentHole];
-				velocity(0) = velocity(1) = 0;
-				//std::cout << gTable.players[gTable.currentPlayer].holeCompleted << std::endl;
-				if (gTable.currentPlayer < NUM_PLAYERS-1) {
-					gTable.currentPlayer++;
+	if (position(0) > holex[gTable.currentHole] - 0.1 &&position(0) < holex[gTable.currentHole] + 0.1) {
+		if (position(1) > holez[gTable.currentHole] - 0.1 &&position(1) < holez[gTable.currentHole] + 0.1) {
+			//std::cout << "Current Player:" << gTable.currentPlayer << std::endl;
+			//std::cout << "Has Hit Hole !" << std::endl;
+			position(0) = startposx[gTable.currentHole];
+			position(1) = startposz[gTable.currentHole];
+			velocity(0) = velocity(1) = 0;
+			//std::cout << gTable.players[gTable.currentPlayer].holeCompleted << std::endl;
+			if (gTable.currentPlayer < NUM_PLAYERS-1) {
+				gTable.currentPlayer++;
+			}
+			else
+			{
+				gTable.currentPlayer = 0;
+				if (gTable.currentHole < NUM_HOLES-1) {
+
+
+					gTable.currentHole++;
+					position(0) = startposx[gTable.currentHole];
+					position(1) = startposz[gTable.currentHole];
+					velocity(0) = velocity(1) = 0;
 				}
 				else
 				{
-					gTable.currentPlayer = 0;
-					if (gTable.currentHole < NUM_HOLES-1) {
-
-
-						gTable.currentHole++;
-						position(0) = startposx[gTable.currentHole];
-						position(1) = startposz[gTable.currentHole];
-						velocity(0) = velocity(1) = 0;
-					}
-					else
-					{
-						std::cout << "END OF GAME" << std::endl;
-						gTable.balls[0].position(0) = 0.5;
-						gTable.balls[0].position(1) = -1.5;
-						gTable.gameOver = true;
-					}
+					std::cout << "END OF GAME" << std::endl;
+					gTable.balls[0].position(0) = 0.5;
+					gTable.balls[0].position(1) = -1.5;
+					gTable.gameOver = true;
 				}
-				//std::cout << "Current Player:" << gTable.currentPlayer << std::endl;
 			}
-		}	
+			//std::cout << "Current Player:" << gTable.currentPlayer << std::endl;
+		}
+			
 	}
 	return false;
 }

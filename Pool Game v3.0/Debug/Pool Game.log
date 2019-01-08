@@ -1,12 +1,2 @@
-﻿  Pool Game.cpp
-c:\users\student\desktop\minigolf\pool game v3.0\pool game.cpp(77): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(133): note: see declaration of 'strcpy'
-c:\users\student\desktop\minigolf\pool game v3.0\pool game.cpp(110): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(133): note: see declaration of 'strcpy'
-c:\users\student\desktop\minigolf\pool game v3.0\pool game.cpp(157): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(133): note: see declaration of 'strcpy'
-c:\users\student\desktop\minigolf\pool game v3.0\pool game.cpp(193): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(133): note: see declaration of 'strcpy'
-c:\users\student\desktop\minigolf\pool game v3.0\pool game.cpp(228): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.17134.0\ucrt\string.h(133): note: see declaration of 'strcpy'
-  Pool Game.vcxproj -> C:\Users\Student\Desktop\MiniGolf\Pool Game v3.0\Debug\Pool Game.exe
+﻿  simulation.cpp
+  Pool Game.vcxproj -> C:\Users\Thoma\Desktop\MiniGolf\Pool Game v3.0\Debug\Pool Game.exe
